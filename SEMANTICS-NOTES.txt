@@ -1,0 +1,13 @@
+ARoney (Group AF)
+
+1. Files for testing are in ./testfiles .
+2. Main EXE is at ./Compiler.exe (it can be run without parameters and you can choose a test file or a visitor from the menu).
+3. A small change was made to how one line comments are consumed (to allow a one line comment at the end of a file).
+4. Added the or (||) operator.
+5. Made some housekeeping changes to some AST types.
+6. I designed my type checker as a two phase type checker.  The best explanations are the comments in the visitor files themselves:
+   a. GlobalTypeVisitor (see Compiler\Visitors\GlobalTypeVisitor.cs): finds global types (i.e., classes), finds any time a 
+      type was used; then, checks that each used type is a valid type, checks classes, properties, methods, method arguments and 
+      method locals for type or inheritance issues.
+   b. TypeCheckerVisitor (see Compiler\Visitors\TypeCheckerVisitor.cs): as the classes, class properties, methods, methods 
+      arguments and locals have already been checked in the global checker, this checker ensures that types used in statements are compatible.

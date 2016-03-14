@@ -1,0 +1,44 @@
+ARoney (Group AF)
+
+1. Files for testing are in ./testfiles.
+2. Main EXE is at ./Compiler.exe (it can be run without paramters and you can choose a test file or a visitor from the menu).
+3. There are a few requirements to have the compiler automatically build against the Windows 10 SDK:
+    a. Windows 10 (https://www.microsoft.com/en-us/software-download/windows10).
+    b. Visual Studio 2015 (https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx).
+    c. Windows 10 SDK (https://dev.windows.com/en-us/downloads/windows-10-sdk).
+4. There are also two locations that must contain the proper files (both are the default locations if [3] is completed properly):
+    a. C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64\ml64.exe (location of the assembly compiler).
+    b. C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10240.0\ucrt\x64 (location of ucrt.lib, the newest library for Windows 10 CRT methods).
+5. All required features were added, and all of the provided test files run correctly.
+6. The following extra features were added:
+    a. Language features and grammar additions:
+        - LessEqual, GreaterEqual, NotEqual, Equal, Mod, Divide, Not
+        - instanceof
+        - Null checking in code (obj == null)
+        - String literals ("String!")
+        - String literal addition ("String " + "Another " + "string " + 5)
+        - Expression statement ( "while ((n = n.next()) != null)" )
+        - for-loop
+        - Iterators (++, --, +=, -=, *=, /=, %=)
+        - Empty println()
+        - Method return type of void
+        - Return from anywhere in method (and check for at least one return statement)
+        - Variable declaration anywhere and scope checking
+        - Declaration and assignment in one
+        - System.in.readline (reads a line of input from user)
+        - System.compiler.destroy (frees a block of memory)
+        - System.compiler.atol (char array to long)
+        - Hex numbers
+        - Allow more than three method arguments
+    b. Runtime checking and features:
+        - Null checking with location
+        - Freed memory block checking
+        - Array bounds checking with location
+        - Memory allocation checking of less than 1 GB
+        - Insertion of runtime strings by compiler
+    c. Other differences:
+        - No C bootstrap needed
+        - Built only against ucrtd.lib
+        - Built in C#
+        - Uses Microsoft convention with proper use of shadow space, etc.
+        - I worked "Obama's elf" (https://www.youtube.com/watch?v=A_B5UrI7nAI)

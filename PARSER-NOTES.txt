@@ -1,0 +1,7 @@
+ARoney (Group AF)
+
+1. Files for testing are in ./testfiles .
+2. Main EXE is at ./Compiler.exe (it can be run without paramters and you can choose a test file or a visitor from the menu).
+3. My AST TreeVisitor and PrettyVisitor output results (for four of the files) are in ./testfiles/results .
+4. There are no shift-reduce conflicts remaining or reported by YACC.  All conflicts have been resolved with "%left" and "%right" declarations.
+5. I added a few extra binary operators (e.g., "<=", "!=", etc.), and I changed method definitions so that variable declarations could appear anywhere in the statement list.  In addition, I removed the IdentifierNode, as I think the name of something should just be a property on that node.

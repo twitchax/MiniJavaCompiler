@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0BCDFC7B-B973-4957-B66E-24821E72CFD3}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Compiler</RootNamespace>
+    <AssemblyName>Compiler</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Label="YltParsers">
+    <Names>MiniJava</Names>
+  </PropertyGroup>
+  <PropertyGroup Label="YltProperties">
+    <YltTools>$(SolutionDir)packages\YaccLexTools.0.2.2\tools\</YltTools>
+    <GplexTool>"$(YltTools)gplex.exe"</GplexTool>
+    <GppgTool>"$(YltTools)gppg.exe"</GppgTool>
+  </PropertyGroup>
+  <PropertyGroup Label="GenerateMiniJavaProperties">
+    <MiniJavaParser>$(ProjectDir)MiniJava</MiniJavaParser>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assembler\Builder.cs" />
+    <Compile Include="Ast\Classes.cs" />
+    <Compile Include="Ast\Declarations.cs" />
+    <Compile Include="Ast\ExpressionStatements.cs" />
+    <Compile Include="Ast\Goal.cs" />
+    <Compile Include="Ast\Expressions.cs" />
+    <Compile Include="Ast\Node.cs" />
+    <Compile Include="Ast\Statements.cs" />
+    <Compile Include="Ast\TokenNode.cs" />
+    <Compile Include="Ast\Types.cs" />
+    <Compile Include="Language\GplexBuffers.cs" />
+    <Compile Include="Helpers.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Language\ShiftReduceParserCode.cs" />
+    <Compile Include="Semantics\Symbols.cs" />
+    <Compile Include="Semantics\SemanticAtom.cs" />
+    <Compile Include="Semantics\UtilizedType.cs" />
+    <Compile Include="Semantics\Types.cs" />
+    <Compile Include="Visitors\Globals.cs" />
+    <Compile Include="Visitors\InstructionVisitor.cs" />
+    <Compile Include="Visitors\PrettyVisitor.cs" />
+    <Compile Include="Visitors\TypeCheckerVisitor.cs" />
+    <Compile Include="Visitors\GlobalTypeVisitor.cs" />
+    <Compile Include="Visitors\TreeVisitor.cs" />
+    <Compile Include="Visitors\Visitor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup Label="MiniJavaFiles">
+    <Compile Include="Language\MiniJava.Parser.cs">
+      <DependentUpon>MiniJava.parser</DependentUpon>
+    </Compile>
+    <Compile Include="Language\MiniJava.Parser.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MiniJava.Language.grammar.y</DependentUpon>
+    </Compile>
+    <Compile Include="Language\MiniJava.Scanner.cs">
+      <DependentUpon>MiniJava.parser</DependentUpon>
+    </Compile>
+    <Compile Include="Language\MiniJava.Scanner.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MiniJava.Language.analyzer.lex</DependentUpon>
+    </Compile>
+    <None Include="Language\MiniJava.Language.analyzer.lex">
+      <DependentUpon>MiniJava.parser</DependentUpon>
+    </None>
+    <None Include="Language\MiniJava.Language.grammar.y">
+      <DependentUpon>MiniJava.parser</DependentUpon>
+    </None>
+    <None Include="Language\MiniJava.parser" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="BeforeBuild" DependsOnTargets="YltBuildGen" />
+  <Target Name="YltBuildGen" DependsOnTargets="GenerateMiniJava" />
+  <Target Name="GenerateMiniJava" Inputs="$(ProjectDir)\language\$(MiniJavaParser).Language.analyzer.lex;$(ProjectDir)\language\$(MiniJavaParser).Language.grammar.y" Outputs="$(ProjectDir)\language\$(MiniJavaParser).Scanner.Generated.cs;$(ProjectDir)\language\$(MiniJavaParser).Parser.Generated.cs">
+    <Message Text="Generating scanner for $(MiniJavaParser) ..." />
+    <Exec Command="$(GplexTool) &quot;/out:$(ProjectDir)\language\$(MiniJavaParser).Scanner.Generated.cs&quot; &quot;$(ProjectDir)\language\$(MiniJavaParser).Language.analyzer.lex&quot;" WorkingDirectory="$(ProjectDir)\language\" Outputs="$(GenDir)Scanner.cs">
+      <Output TaskParameter="Outputs" ItemName="MiniJavaScanner" />
+    </Exec>
+    <Message Text="Generating parser for $(MiniJavaParser) ..." />
+    <Exec Command="$(GppgTool) /no-lines /gplex &quot;$(ProjectDir)\language\$(MiniJavaParser).Language.grammar.y&quot; &gt; &quot;$(ProjectDir)\language\$(MiniJavaParser).Parser.Generated.cs&quot;" WorkingDirectory="$(ProjectDir)\language\" Outputs="$(ProjectDir)\language\$(MiniJavaParser).Parser.Generated.cs">
+      <Output TaskParameter="Outputs" ItemName="MiniJava" />
+    </Exec>
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>copy $(SolutionDir)\Compiler\bin\Debug\Compiler.exe $(SolutionDir)\Compiler.exe</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
